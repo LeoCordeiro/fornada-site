@@ -2,10 +2,11 @@
 /**
  * Abertura da Início: num creme só, o texto e a foto 1 sangrando — sem faixa marrom, sem ícone,
  * sem rota, sem garantias (moram na Qualidade).
- * ≥ 1024: texto nas colunas 1–8, 40 px abaixo do topo da foto (y 116, ≤ 120); foto 4:5 nas colunas 9–12 até a borda
- * direita (515 × 644 a 1440). Colunas 1–8, não 1–7: com o H1 de 80 px, "na hora combinada." mede
- * 696 px e as 7 colunas têm 653 — o H1 ia para 4 linhas e o CTA para 758; com 8, os 2 CTAs cabem lado a lado.
- * É o LCP do desktop: fetchpriority high + preload no index.html (vite.config, só ≥ 1024).
+ * ≥ 1024: foto nas colunas 9–12 até a borda direita, com o topo em y 116; texto nas colunas 1–8, centralizado na
+ * altura da foto (com o H1 de 80 px, "na hora combinada." mede 696 px: nas 7 colunas o H1 iria para 4 linhas). A foto
+ * é 4:5 até HERO_FOTO.alturaMax (e nunca passa do fim da tela); em tela larga o quadro fica mais largo que alto e a
+ * foto corta em cima e embaixo pelo ponto focal do mapa — a altura da abertura acompanha o texto em vez de crescer com
+ * a largura. É o LCP do desktop: fetchpriority high + preload pela pré-busca da rota (vite.config, só ≥ 1024).
  * < 1024: rótulo → H1 → sub → CTAs → foto 4:3 (3:2 no tablet) sangrando as duas bordas, com o topo ≥ 700 a 375×812:
  * no celular o LCP continua sendo o H1 e a foto carrega lazy, sem disputar banda com a fonte.
  * Sem foto no mapa (fotoNoAr): H1 de 96 px nas colunas 1–10, uma coluna só.
@@ -21,10 +22,11 @@ import { CTA_COMERCIO, CTA_PRODUTOR } from '@/data/navegacao'
 import { fotoNoAr } from '@/data/fotos'
 import { quandoRevelada } from '@/composables/useVeu'
 import { usePaginaVista } from '@/composables/useVisita'
-import { HERO, HERO_FOTO_SIZES_DESKTOP as SIZES_DESKTOP } from './conteudo'
+import { HERO, HERO_FOTO } from './conteudo'
 
 const t = HERO.titulo
 const comFoto = fotoNoAr('inicio-abertura-caixas')
+const alturaFoto = { '--fc-ab-foto-max': `${HERO_FOTO.alturaMax}px` }
 
 const vista = usePaginaVista()
 // sequência terminada: as animações de entrada saem do CSS (trocar de largura ou ligar o reduzir movimento depois
@@ -50,6 +52,7 @@ onBeforeUnmount(() => {
     class="fc-ab"
     :class="{ 'fc-ab--sem-foto': !comFoto, 'is-pronto': pronto }"
     :pad="{ topo: 'var(--fc-ab-topo)', base: 'var(--fc-secao-home)' }"
+    :style="alturaFoto"
     rotulado="hero-titulo"
   >
     <div class="fc-g fc-ab__g">
@@ -71,7 +74,9 @@ onBeforeUnmount(() => {
         proporcao-tablet="3:2"
         proporcao-desktop="4:5"
         sizes="100vw"
-        :sizes-desktop="SIZES_DESKTOP"
+        :sizes-desktop="HERO_FOTO.sizesDesktop"
+        :media-largo="HERO_FOTO.mediaLarga"
+        :sizes-largo="HERO_FOTO.sizesLarga"
         prioridade="(min-width: 1024px)"
         legenda-fora
       />
@@ -80,7 +85,7 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* topo: abaixo do cabeçalho absoluto; no desktop a foto começa em 116 (≤ 120) — o texto 40 px abaixo dela */
+/* topo: abaixo do cabeçalho absoluto; no desktop a foto começa em 116 */
 .fc-ab { --fc-ab-topo: var(--fc-topo-header); }
 .fc-ab__rotulo { margin-bottom: 20px; }
 /* < 400: a cidade desce inteira, sem "·" sozinho no fim da 1ª linha */
@@ -102,14 +107,19 @@ onBeforeUnmount(() => {
 }
 @media (min-width: 1024px) {
   .fc-ab { --fc-ab-topo: 116px; }
-  .fc-ab__g { align-items: start; }
-  .fc-ab__texto { grid-column: 2 / 10; grid-row: 1; padding-top: 40px; }
+  /* texto no meio da altura da foto (ou a foto em cima, quando o texto é o mais alto, como a 1024) */
+  .fc-ab__g { align-items: center; }
+  .fc-ab__texto { grid-column: 2 / 10; grid-row: 1; }
   .fc-ab__l { display: block; }
   .fc-ab__ctas { margin-top: 40px; }
-  .fc-ab__foto { grid-column: 10 / full-end; grid-row: 1; margin-top: 0; }
+  .fc-ab__foto { grid-column: 10 / full-end; grid-row: 1; margin-top: 0; align-self: start; }
+  /* 4:5 até a altura máxima, que também não passa do fim da tela (mínimo 420): acima dela o quadro alarga e a foto
+     corta em cima e embaixo (object-fit: cover, ponto focal do mapa). A largura explícita impede que o limite de altura
+     passe para a largura pela proporção (a foto encolheria e deixaria a borda direita) */
+  .fc-ab__foto :deep(.fc-foto__quadro) { width: 100%; max-height: clamp(420px, calc(100svh - 140px), var(--fc-ab-foto-max)); }
   .fc-ab__foto :deep(.fc-foto__legenda--fora) { padding-inline: 0; }
   /* sem foto: o H1 de 96 px em uma coluna só (colunas 1–10) */
-  .fc-ab--sem-foto .fc-ab__texto { grid-column: 2 / 12; padding-top: 0; }
+  .fc-ab--sem-foto .fc-ab__texto { grid-column: 2 / 12; }
   .fc-ab--sem-foto .fc-ab__h1 { font-size: var(--fc-fs-display); }
 }
 

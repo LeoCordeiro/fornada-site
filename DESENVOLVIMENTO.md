@@ -112,9 +112,17 @@ trocar os arquivos e a entrada no mapa; nenhuma página muda.
   formatos (ex.: `inicio-abertura-4x5-480`, `-800`, `-1003`). A proporção no nome (`4x3`, `4x5`) define a altura
   reservada antes de a imagem baixar.
 - Na entrada do mapa: `alt` (vazio em foto decorativa), `legenda`, `descricao` (o que a foto deve mostrar; aparece no
-  espaço vazio da prévia) e `imagens: { base: serie('…'), desktop: serie('…') }`.
+  espaço vazio da prévia), `foco` opcional (`object-position` quando o quadro corta a foto) e
+  `imagens: { base: serie('…'), desktop: serie('…'), largo: serie('…') }` — `desktop` a partir de 1024 px e `largo`
+  (opcional) na media `mediaLargo` do `FotoReal`, para tela larga.
 - Entrada sem `imagens`: na prévia aparece o espaço marcado com a descrição; em produção o espaço não existe.
-- Foto de banco de imagens nunca representa o produto que o cliente recebe: só abertura, ambiente e processo.
+- Fotos de banco de imagens guardam o lugar das reais: processo na abertura e na segurança da Início, produto e
+  ambiente nas categorias e nas duas portas. Seção que mostra produto de banco traz a nota "Imagens ilustrativas."
+  (`NOTA_FOTOS_CATEGORIAS`, em `src/data/categorias.js`). Foto de banco não leva legenda nem crédito, e nenhuma mostra
+  rosto, adorno em quem manipula alimento, letreiro ou marca legível.
+- A foto da abertura tem altura máxima no desktop (`HERO_FOTO.alturaMax`, em `src/components/home/conteudo.js`):
+  acima dela o quadro fica mais largo e a foto corta em cima e embaixo. Os `sizes` e as `media` dela valem também
+  para o preload da pré-busca da rota (`vite.config.js`).
 
 ### Textos
 

@@ -3,13 +3,14 @@
  * O espaço da foto. As fotos moram no mapa único `src/data/fotos.js`: a página passa a `chave` e o componente
  * lê de lá o alt, a legenda, o briefing e os arquivos — trocar a foto de banco pela real é mexer só no mapa.
  * Com imagem: <picture> com WebP + JPEG de reserva, srcset/sizes e width/height reais (CLS 0); direção de arte por
- * largura (`imagens.desktop` ≥ 1024) com a proporção do quadro trocando no mesmo breakpoint da fonte. Nunca o
- * componente de imagem do Vuetify. Foto não anima.
+ * largura (`imagens.desktop` ≥ 1024) com a proporção do quadro trocando no mesmo breakpoint da fonte, e um recorte
+ * opcional para tela larga (`imagens.largo`, na media `mediaLargo`, antes do desktop). Nunca o componente de imagem
+ * do Vuetify. Foto não anima.
  * `prioridade` (só a abertura da Início): eager + fetchpriority high — `true` sempre, ou a media em que a foto é o
  * LCP (fora dela fica lazy, como as outras, e não disputa banda com a fonte do H1 no celular).
- * Sem imagem: na prévia, o espaço tracejado com o briefing "Foto real da Fornada — {descricao}" e a proporção (sem
- * arco C e sem numeral: decisão 5 da Home); em PRODUÇÃO não desenha nada — quem reserva espaço pergunta
- * `fotoNoAr(chave)` (data/fotos) e fecha o layout.
+ * `decorativa`: alt "" mesmo com alt no mapa — para a foto dentro de um link que já tem o nome do que ela mostra.
+ * Sem imagem: na prévia, o espaço tracejado com o briefing "Foto real da Fornada — {descricao}" e a proporção; em
+ * PRODUÇÃO não desenha nada — quem reserva espaço pergunta `fotoNoAr(chave)` (data/fotos) e fecha o layout.
  */
 import { computed } from 'vue'
 import { useTom } from '@/composables/useTom'
@@ -23,7 +24,10 @@ const props = defineProps({
   proporcaoDesktop: { type: String, default: '', validator: (v) => !v || PROPORCOES.includes(v) }, // ≥ 1024
   sizes: { type: String, default: '100vw' },
   sizesDesktop: { type: String, default: '' },
+  mediaLargo: { type: String, default: '(min-width: 1860px)' }, // só com `imagens.largo` no mapa
+  sizesLargo: { type: String, default: '' },
   prioridade: { type: [Boolean, String], default: false },
+  decorativa: { type: Boolean, default: false },
   legendaFora: { type: Boolean, default: false }, // legenda embaixo, em `legenda` sobre o fundo (Início); senão a tarja
   tom: { type: String, default: '' },
 })
@@ -33,11 +37,12 @@ const MEDIA_DESKTOP = '(min-width: 1024px)'
 const entrada = computed(() => FOTOS[props.chave] ?? {})
 const base = computed(() => entrada.value.imagens?.base ?? null)
 const desktop = computed(() => entrada.value.imagens?.desktop ?? null)
+const largo = computed(() => entrada.value.imagens?.largo ?? null)
 const temImagem = computed(() => Boolean(base.value))
 const existe = computed(() => mostraFoto(temImagem.value ? 'sim' : ''))
 const descricao = computed(() => entrada.value.descricao ?? '')
 const legenda = computed(() => entrada.value.legenda ?? '')
-const alt = computed(() => entrada.value.alt ?? descricao.value) // '' = decorativa
+const alt = computed(() => (props.decorativa ? '' : entrada.value.alt ?? descricao.value)) // '' = decorativa
 // avaliada uma vez: é a carga da página que importa (a da abertura é o LCP só no desktop)
 const alta = typeof props.prioridade === 'string' ? typeof matchMedia === 'function' && matchMedia(props.prioridade).matches : props.prioridade
 
@@ -56,6 +61,10 @@ const rotuloProporcao = computed(() => [props.proporcao, props.proporcaoTablet &
   <figure v-if="existe" class="fc-foto" :class="temImagem ? 'fc-foto--real' : ['fc-foto--vazia', { 'fc-foto--escuro': escuro }]" :style="estilo">
     <template v-if="temImagem">
       <picture class="fc-foto__quadro">
+        <template v-if="largo">
+          <source :media="mediaLargo" type="image/webp" :srcset="largo.webp" :sizes="sizesLargo || sizesDesktop || sizes" :width="largo.w" :height="largo.h" />
+          <source :media="mediaLargo" type="image/jpeg" :srcset="largo.jpg" :sizes="sizesLargo || sizesDesktop || sizes" :width="largo.w" :height="largo.h" />
+        </template>
         <template v-if="desktop">
           <source :media="MEDIA_DESKTOP" type="image/webp" :srcset="desktop.webp" :sizes="sizesDesktop || sizes" :width="desktop.w" :height="desktop.h" />
           <source :media="MEDIA_DESKTOP" type="image/jpeg" :srcset="desktop.jpg" :sizes="sizesDesktop || sizes" :width="desktop.w" :height="desktop.h" />

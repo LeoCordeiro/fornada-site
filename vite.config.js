@@ -8,7 +8,7 @@ import vuetify from 'vite-plugin-vuetify'
 import { PALETA } from './src/styles/paleta.js'
 import { SITE } from './src/config/site.js'
 import { acharSentinelas, listarPendencias, mensagemPortao } from './src/config/pendencias-build.js'
-import { HERO_FOTO_SIZES_DESKTOP } from './src/components/home/conteudo.js'
+import { HERO_FOTO } from './src/components/home/conteudo.js'
 
 const raiz = fileURLToPath(new URL('.', import.meta.url))
 
@@ -39,18 +39,22 @@ const preloadFontes = () => {
 
 // A foto da abertura da Home é o LCP do desktop. O preload começa a baixá-la junto com o HTML (sem ele, só depois do
 // pacote JS montar a página). Só ≥ 1024 (media): no celular o LCP é o H1 e a foto (lazy, abaixo da dobra) não disputa
-// banda com a fonte. Mesmos srcset (WebP) e sizes do <source> do HeroFoto — o navegador reaproveita o arquivo.
+// banda com a fonte. Mesmos srcset (WebP), sizes e media dos <source> do HeroFoto (HERO_FOTO): 4:5 de 1024 a 1859 e
+// o recorte 4:3 a partir de 1860 — o navegador reaproveita o arquivo.
 // Vai pela pré-busca da rota (abaixo), só na "/": como <link> fixo no index.html, a entrada direta numa página
-// interna no desktop também baixava os ~45 KB da foto com prioridade alta. O item são os atributos do <link>.
-const FOTO_ABERTURA = /^assets\/inicio-abertura-4x5-([0-9]+)-[\w-]+\.webp$/
-function preloadDaFotoDaAbertura(bundle, base, erro) {
+// interna no desktop também baixaria a foto com prioridade alta. Os itens são os atributos de cada <link>.
+const serieDaAbertura = (bundle, base, proporcao, erro) => {
+  const re = new RegExp(`^assets/inicio-abertura-${proporcao}-([0-9]+)-[\\w-]+\\.webp$`)
   const serie = Object.keys(bundle)
-    .map((f) => ({ f, m: f.match(FOTO_ABERTURA) }))
+    .map((f) => ({ f, m: f.match(re) }))
     .filter((x) => x.m)
     .sort((a, b) => Number(a.m[1]) - Number(b.m[1]))
-  if (!serie.length) erro('preload da foto da abertura: nenhum arquivo inicio-abertura-4x5-*.webp no pacote')
-  const imagesrcset = serie.map((x) => `${base}${x.f} ${x.m[1]}w`).join(', ')
-  return { rel: 'preload', as: 'image', type: 'image/webp', media: '(min-width: 1024px)', imagesrcset, imagesizes: HERO_FOTO_SIZES_DESKTOP, fetchpriority: 'high' }
+  if (!serie.length) erro(`preload da foto da abertura: nenhum arquivo inicio-abertura-${proporcao}-*.webp no pacote`)
+  return serie.map((x) => `${base}${x.f} ${x.m[1]}w`).join(', ')
+}
+function preloadDaFotoDaAbertura(bundle, base, erro) {
+  const item = (media, proporcao, imagesizes) => ({ rel: 'preload', as: 'image', type: 'image/webp', media, imagesrcset: serieDaAbertura(bundle, base, proporcao, erro), imagesizes, fetchpriority: 'high' })
+  return [item(HERO_FOTO.mediaDesktop, '4x5', HERO_FOTO.sizesDesktop), item(HERO_FOTO.mediaLarga, '4x3', HERO_FOTO.sizesLarga)]
 }
 
 // Pré-busca da rota de entrada. As views são lazy (router): numa carga direta em /#/qualidade o
@@ -108,7 +112,7 @@ const preloadRota = () => {
         if (fontes.length !== 3) this.error(`preload-rota: esperava os 3 woff2 da Poppins (400/500/600), achei ${fontes.length}`)
         for (const rota of Object.keys(mapa)) mapa[rota].push(...fontes)
         // a Home mora no pacote principal: só a Poppins e a foto da abertura (≥ 1024)
-        mapa['/'] = [...fontes, preloadDaFotoDaAbertura(bundle, base, (m) => this.error(m))]
+        mapa['/'] = [...fontes, ...preloadDaFotoDaAbertura(bundle, base, (m) => this.error(m))]
         // antes do <script type="module"> e, principalmente, antes do <link rel="stylesheet">: script inline depois de
         // folha de estilo pendente espera ela baixar para rodar. O <meta charset> continua nos primeiros 1024 bytes.
         const ancora = html.indexOf('<script type="module"')

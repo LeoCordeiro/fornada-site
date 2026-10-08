@@ -1,10 +1,10 @@
 // Mapa único das fotos do site. Todo FotoReal lê daqui pela `chave`: trocar uma foto é trocar o arquivo em
 // src/assets/fotos/ e a entrada aqui — página nenhuma muda.
-// Foto de banco nunca representa o produto que o cliente recebe — só abertura, ambiente e processo: pão pronto ao lado
-// de um título vira promessa de produto, e quem manipula alimento na foto tem de estar dentro da boa prática que o site
-// exige (ambiente profissional, sem adorno). Por isso a Início só tem duas de banco, as duas de massa CRUA em padaria
-// profissional, e Produtos e as duas pontas ficam sem foto até a real chegar. As de banco vão sem crédito na página e
-// sem legenda (a legenda descreve a foto real); decorativa = alt "".
+// Enquanto as fotos reais não chegam, a Início e Produtos usam fotos de banco de imagens: na abertura e na segurança,
+// cenas de processo (massa crua em padaria profissional); nas categorias e nas duas portas, fotos ilustrativas de
+// produto e de ambiente — as seções que mostram produto trazem a nota "Imagens ilustrativas."
+// (NOTA_FOTOS_CATEGORIAS, em data/categorias). Nenhuma foto de banco leva legenda nem crédito na página, e nenhuma
+// mostra rosto, adorno em quem manipula alimento, letreiro ou marca legível.
 // Sem `imagens` = ainda sem foto: na prévia o FotoReal mostra o espaço com o briefing (`descricao`); em produção não
 // desenha nada e quem reservava o espaço pergunta `fotoNoAr(chave)` para fechar o layout.
 import { mostrarPendencias } from '@/config/site'
@@ -46,16 +46,17 @@ function serie(nome) {
 }
 
 export const FOTOS = {
-  // ---- Início: fotos de banco (abertura, ambiente e processo) até a real chegar ----
+  // ---- Início ----
   'inicio-abertura-caixas': {
-    // a única informativa (é a abertura); as de banco descrevem o que está na foto, nunca "da Fornada"
+    // as de banco descrevem o que está na foto, nunca "da Fornada"
     alt: 'Mãos riscando pães crus na boca de um forno de lastro, antes de assar',
     legenda: '', // com a foto real: 'Feita numa entrega de verdade, com a luz da manhã.'
     descricao: 'caixas plásticas de entrega com pães, empilhadas na porta de um comércio de manhã',
-    // banco: a fornada riscada antes de entrar num forno de lastro profissional — produção, não vitrine; massa crua
-    // (não é produto pronto), só antebraços e mãos, sem adorno, sem rosto, sem marca
-    // < 1024: 4:3 (no tablet o espaço é 3:2 e corta em cima e embaixo) · ≥ 1024: 4:5, sangrando à direita.
-    imagens: { base: serie('inicio-abertura-4x3'), desktop: serie('inicio-abertura-4x5') },
+    // banco: a fornada riscada antes de entrar num forno de lastro profissional; só antebraços e mãos, sem adorno.
+    // < 1024: 4:3 (no tablet o quadro é 3:2 e corta em cima e embaixo) · 1024–1859: 4:5, sangrando à direita, até a
+    // altura máxima do quadro · ≥ 1860 o quadro passa de quadrado e entra o 4:3 (`largo`), que perde menos da cena
+    imagens: { base: serie('inicio-abertura-4x3'), desktop: serie('inicio-abertura-4x5'), largo: serie('inicio-abertura-4x3') },
+    foco: '50% 55%', // mãos e pães, quando o quadro corta em cima e embaixo
   },
   'inicio-qualidade-etiqueta': {
     alt: '',
@@ -63,48 +64,49 @@ export const FOTOS = {
     descricao: 'etiqueta de lote colada na caixa de entrega, mão anotando a data',
     // banco: massa fermentando em fileiras nas tábuas de lona (processo, sem produto prometido); os dois recortes
     // ficam longe das marcas pintadas no pano
-    imagens: { base: serie('inicio-seguranca-4x3'), desktop: serie('inicio-seguranca-4x5') },
-  },
-  'inicio-produtos-forno': {
-    alt: '',
-    legenda: '', // processo, não produto: nunca legenda que apresente a foto como produto da rede
-    descricao: 'fornada saindo do forno da rede, na assadeira',
-    // sem banco: colada em "O que sai das fornadas da rede", qualquer pão assado vira o produto da rede
+    imagens: { base: serie('inicio-seguranca-4x3'), desktop: serie('inicio-seguranca-4x5'), largo: serie('inicio-seguranca-4x3') },
   },
   'inicio-ponta-comercio': {
-    alt: '',
-    legenda: '',
+    alt: 'Balcão de padaria com pães ensacados e o forno ao fundo',
+    legenda: '', // sem legenda também com a foto real: a Início não afirma de quem é o balcão
     descricao: 'caixa da manhã sendo recebida no balcão de uma lanchonete, só as mãos',
-    // sem banco: nenhum balcão do acervo é de bairro sem rosto, texto legível ou produto em destaque
+    imagens: { base: serie('porta-comercio-3x2') }, // banco; recorte sem o quadro com inscrição e o relógio da parede
   },
   'inicio-ponta-produtor': {
-    alt: '',
+    alt: 'Mãos de luva abrindo massa com rolo numa bancada de madeira',
     legenda: '', // sem legenda também com a foto real: a Início não afirma de quem é o forno
     descricao: 'assadeira com pães na porta do forno, mão de luva',
-    // sem banco: as duas portas andam juntas — com uma só, ficariam desiguais
+    imagens: { base: serie('porta-produtor-3x2') }, // banco: uniforme branco e luvas, sem rosto
   },
 
-  // ---- Páginas internas: só foto real (cada uma mostra uma coisa da Fornada); até chegar, o espaço da prévia ----
+  // ---- Categorias (Início e Produtos): fotos ilustrativas de banco; com a foto real, a legenda do comentário ----
   'categoria-paes': {
-    alt: 'Pães de forma fatiados dentro da caixa de entrega',
-    legenda: 'Produto da rede, do jeito que chega.',
+    alt: 'Pãezinhos num cesto forrado com papel',
+    legenda: '', // com a foto real: 'Produto da rede, do jeito que chega.'
     descricao: 'pães de forma fatiados na caixa de entrega',
+    imagens: { base: serie('categoria-paes-4x3') },
   },
   'categoria-bolos': {
-    alt: 'Mãos embalando um bolo inteiro para a entrega',
-    legenda: 'Produto da rede, do jeito que chega.',
+    alt: 'Fatia de pão de ló num prato, com o bolo inteiro ao fundo',
+    legenda: '',
     descricao: 'bolo inteiro sendo embalado para entrega',
+    imagens: { base: serie('categoria-bolos-4x3') },
   },
   'categoria-salgados-assados': {
-    alt: 'Salgados assados enfileirados numa bandeja de entrega',
-    legenda: 'Produto da rede, do jeito que chega.',
+    alt: 'Salgados assados dourados sobre uma tábua',
+    legenda: '',
     descricao: 'salgados assados organizados em bandeja de entrega',
+    imagens: { base: serie('categoria-salgados-4x3') },
   },
   'categoria-massas-frescas': {
-    alt: 'Discos de massa de pizza porcionados numa caixa plástica com tampa',
-    legenda: 'Produto da rede, do jeito que chega.',
+    alt: 'Mãos abrindo bolas de massa numa bancada de inox',
+    legenda: '',
     descricao: 'massa de pizza porcionada em caixa plástica com tampa',
+    // banco; recorte sem o rótulo do spray, o bordado da manga e os pães prontos do fundo; retoque: anel do dedo
+    imagens: { base: serie('categoria-massas-4x3') },
   },
+
+  // ---- Páginas internas: só foto real; até chegar, o espaço da prévia ----
   'comercios-balcao': {
     alt: 'Caixa de entrega sendo recebida no balcão de uma lanchonete, de manhã',
     legenda: 'O momento em que a fornada chega no balcão.',

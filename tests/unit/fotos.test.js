@@ -31,12 +31,24 @@ describe('mapa de fotos', () => {
     }
   })
 
-  it('a abertura e a segurança da Início têm foto, com versão de computador', () => {
+  it('a abertura e a segurança da Início têm foto, com versão de computador (e a abertura, a de tela larga)', () => {
     for (const chave of ['inicio-abertura-caixas', 'inicio-qualidade-etiqueta']) expect(temFoto(chave), chave).toBe(true)
     expect(FOTOS['inicio-abertura-caixas'].imagens.desktop).toBeTruthy()
+    expect(FOTOS['inicio-abertura-caixas'].imagens.largo).toBeTruthy()
     expect(FOTOS['inicio-qualidade-etiqueta'].imagens.desktop).toBeTruthy()
-    // a abertura é a única informativa: as outras de banco são decorativas (alt "")
     expect(FOTOS['inicio-abertura-caixas'].alt).not.toBe('')
+  })
+
+  it('categorias e portas da Início têm foto, com alt descritivo e sem legenda (foto de banco)', () => {
+    for (const c of CATEGORIAS) {
+      expect(temFoto(c.foto), c.chave).toBe(true)
+      expect(FOTOS[c.foto].alt, c.chave).not.toBe('')
+      expect(FOTOS[c.foto].legenda, c.chave).toBe('')
+    }
+    for (const chave of ['inicio-ponta-comercio', 'inicio-ponta-produtor']) {
+      expect(temFoto(chave), chave).toBe(true)
+      expect(FOTOS[chave].alt, chave).not.toBe('')
+    }
   })
 
   it('as chaves que o código pede existem', () => {

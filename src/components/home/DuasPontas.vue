@@ -7,10 +7,9 @@
  * 160 px no centro da coluna 7 e na altura das fotos, produtor nas 9–12. A costura do rodapé desce na coluna 7, logo
  * abaixo do ícone (HomeView: useRodape coluna 7; o respiro de 96 px embaixo é do BlocoRota, último bloco).
  * Tablet: portas nas colunas 1–4 e 5–8, ícone de 96 px acima delas, à esquerda.
- * Celular: sem as fotos (custariam ≈ 540 px e repetiriam o texto da porta) — H2 → sub → comércio → ícone → produtor.
- * Fotos: só a real, sem legenda — a Início não afirma de quem é o balcão nem o forno. Sem foto de
- * banco: em produção as portas são só texto em toda largura, com os botões alinhados embaixo; na
- * prévia o espaço tracejado com o briefing segura o lugar das duas.
+ * Celular: H2 → sub → comércio (foto sangrando as duas bordas) → ícone → produtor (idem).
+ * Fotos sem legenda — a Início não afirma de quem é o balcão nem o forno. Sem foto no mapa, a porta fica só com o
+ * texto, com os botões alinhados embaixo; na prévia o espaço tracejado com o briefing segura o lugar.
  */
 import BlocoRota from '@/components/rota/BlocoRota.vue'
 import BotaoMarca from '@/components/marca/BotaoMarca.vue'
@@ -22,9 +21,9 @@ import { PONTAS as P } from './conteudo'
 
 const fotoComercio = fotoNoAr('inicio-ponta-comercio')
 const fotoProdutor = fotoNoAr('inicio-ponta-produtor')
-// colunas 1–5 (459 a 1440) e 9–12 (363); no tablet, 4 colunas da grade de 8 (W/2 − 44); no celular não aparecem
-const SIZES_COMERCIO = '(min-width: 1200px) 459px, (min-width: 1024px) calc(41.7vw - 41px), calc(50vw - 44px)'
-const SIZES_PRODUTOR = '(min-width: 1200px) 363px, (min-width: 1024px) calc(33.3vw - 37px), calc(50vw - 44px)'
+// colunas 1–5 (459 a partir de 1200) e 9–12 (363); no tablet, 4 colunas da grade de 8 (W/2 − 44); no celular, a tela
+const SIZES_COMERCIO = '(min-width: 1200px) 459px, (min-width: 1024px) calc(41.7vw - 41px), (min-width: 768px) calc(50vw - 44px), 100vw'
+const SIZES_PRODUTOR = '(min-width: 1200px) 363px, (min-width: 1024px) calc(33.3vw - 37px), (min-width: 768px) calc(50vw - 44px), 100vw'
 </script>
 
 <template>
@@ -66,9 +65,9 @@ const SIZES_PRODUTOR = '(min-width: 1200px) 363px, (min-width: 1024px) calc(33.3
 .fc-dp__corpo { display: flex; flex-direction: column; align-items: flex-start; }
 .fc-dp__texto { margin: 12px 0 24px; }
 .fc-dp__cta { margin-top: auto; }
-/* celular: as portas sem foto */
+/* celular: a foto da porta sangra as duas bordas, 20 px acima do rótulo */
 @media (max-width: 767px) {
-  .fc-dp__foto { display: none; }
+  .fc-dp__foto { margin: 0 calc(var(--gut) * -1) 20px; }
 }
 /* ≥ 768: cada porta ocupa 2 linhas da grade (subgrid): fotos numa linha, textos na outra — o ícone centra na das fotos */
 @media (min-width: 768px) {

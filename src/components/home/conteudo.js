@@ -11,10 +11,23 @@ export const HERO = {
   sub: 'Pão, bolo, salgado assado e massa fresca com entrega recorrente para o comércio de Guarulhos e região. Uma parte sai do nosso forno, a outra de produtores parceiros com regularização sanitária.',
 }
 
-/** Largura da foto da abertura ≥ 1024 (da coluna 9 até a borda): W/2 − 205,3 a partir de 1200 e (W − 16)/3
- *  abaixo. Um só texto para o <source> (HeroFoto) e o preload do index.html (vite.config): se divergirem, o
+/** Foto da abertura a partir de 1024 px: da coluna 9 até a borda da tela — largura W/2 − 205,3 a partir de 1200 e
+ *  (W − 16)/3 abaixo —, em 4:5 até `alturaMax`. Acima dessa altura o quadro fica mais largo que 4:5 e a foto corta em
+ *  cima e embaixo (object-fit: cover); a partir de `larga` o quadro passa de quadrado e entra o recorte 4:3, que perde
+ *  menos da cena. No 4:3 num quadro mais estreito que 4:3 quem manda é a altura: a largura que a foto ocupa é
+ *  alturaMax × 4/3, e é isso que o `sizes` declara até o quadro chegar a 4:3.
+ *  Os mesmos textos vão no <source> (HeroFoto) e no preload da pré-busca da rota (vite.config): se divergirem, o
  *  navegador baixa a foto duas vezes. */
-export const HERO_FOTO_SIZES_DESKTOP = '(min-width: 1200px) calc(50vw - 205px), calc(33.3vw - 5px)'
+const ALTURA_MAX = 700
+const LARGA = 1860
+const LARGURA_43 = Math.ceil((ALTURA_MAX * 4) / 3)
+export const HERO_FOTO = {
+  alturaMax: ALTURA_MAX,
+  sizesDesktop: '(min-width: 1200px) calc(50vw - 205px), calc(33.3vw - 5px)',
+  mediaDesktop: `(min-width: 1024px) and (max-width: ${LARGA - 0.02}px)`,
+  mediaLarga: `(min-width: ${LARGA}px)`,
+  sizesLarga: `(min-width: ${Math.ceil(2 * (LARGURA_43 + 205))}px) calc(50vw - 205px), ${LARGURA_43}px`,
+}
 
 /** Como funciona: o sub cortado e uma frase por passo (o resto do texto de cada passo mora na página). */
 export const COMO = {
@@ -29,7 +42,7 @@ export const COMO = {
   link: { rotulo: 'Ver o passo a passo', to: { path: '/como-funciona', hash: '#trilha-comercio' } },
 }
 
-/** Produtos: categorias em texto (foto de banco nunca representa o produto). */
+/** Produtos: o pão em destaque e as outras três categorias em lista (as fotos e os nomes moram em data/categorias). */
 export const PRODUTOS = {
   titulo: 'O que sai das fornadas da rede',
   todos: { rotulo: 'Ver todos os produtos', to: '/produtos' },
