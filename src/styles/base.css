@@ -1,0 +1,82 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+/* vuetify/styles declara Roboto no html e nas .text-* com !important (lição da casa, GameLife 09/09):
+   settings.scss corrige na fonte; aqui o reforço com a mesma força. */
+html, body, .v-application { font-family: var(--fc-ff-corpo) !important; }
+:root :is([class*="text-h"], [class*="text-subtitle"], [class*="text-body"], .text-button, .text-caption, .text-overline) {
+  font-family: var(--fc-ff-corpo) !important;
+}
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--fc-creme);
+  color: var(--fc-marrom);
+  font-size: var(--fc-fs-corpo);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+.v-application { background: var(--fc-creme); color: var(--fc-marrom); }
+@media (max-width: 767px) { html { scroll-padding-bottom: 96px; } } /* o botão fixo não tampa o foco */
+
+p { margin: 0; }
+h1, h2, h3, h4 { margin: 0; }
+img, svg { display: block; }
+a { color: inherit; }
+ul, ol { margin: 0; }
+button { font: inherit; color: inherit; }
+
+/* atributo hidden vence classe de display (memórias atributo-hidden e gaveta-fora-da-tela) */
+[hidden] { display: none !important; }
+
+/* foco: contorno 3 px afastado 3 px; cor pelo tom do ancestral mais próximo (tokens.css) */
+:focus-visible { outline: 3px solid var(--fc-foco, var(--fc-marrom)); outline-offset: 3px; }
+/* dois resets do vuetify/styles vencem o :focus-visible (0,1,0) — `a:hover, a:active { outline-width: 0 }`
+   (0,1,1: o link focado sob o cursor ficava sem anel) e, só no Firefox, `button:-moz-focusring { outline: 1px dotted }`
+   (0,1,1). Volta só o que eles tiram: cor e afastamento seguem a regra de foco de cada componente. Controles do
+   Vuetify já têm regra própria (0,2,0) em vuetify-overrides.css. A 2ª regra fica sozinha: fora do Firefox o seletor
+   é inválido e só ela cai. */
+a:is(:hover, :active):focus-visible { outline-width: 3px; }
+button:-moz-focusring { outline: 3px solid var(--fc-foco, var(--fc-marrom)); }
+/* H1 e <main> recebem foco por script (troca de rota, link de pular): não são controles, não mostram anel */
+#conteudo:focus, #conteudo h1:focus, #conteudo [data-fc-alvo-foco]:focus { outline: none; }
+
+.fc-sr {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- grade de seção: linhas nomeadas com sangria; nada de VRow/VCol em seção ---- */
+.fc-g {
+  display: grid;
+  column-gap: var(--gap);
+  grid-template-columns:
+    [full-start] minmax(calc(var(--gut) - var(--gap)), 1fr)
+    [c-start] repeat(var(--n), minmax(0, var(--col)))
+    [c-end] minmax(calc(var(--gut) - var(--gap)), 1fr) [full-end];
+}
+.fc-g > * { grid-column: c-start / c-end; min-width: 0; }
+.fc-wrap { width: min(100% - 2 * var(--gut), var(--fc-wrap-max) - 2 * var(--gut)); margin-inline: auto; }
+
+/* ---- rota de pontos (RotaTracado e RotaDivisa): ponto de 12 px por traço de comprimento zero + parada ---- */
+.fc-rota__linha { stroke: var(--fc-dourado); stroke-width: 12; stroke-linecap: round; fill: none; }
+.fc-parada path { fill: none; stroke-linecap: round; }
+.fc-parada__halo { stroke-width: 16; }
+.fc-parada__halo--creme { stroke: var(--fc-creme); }
+.fc-parada__halo--marrom { stroke: var(--fc-marrom); }
+.fc-parada__halo--profundo { stroke: var(--fc-marrom-profundo); }
+.fc-parada__arco { stroke: var(--fc-dourado); stroke-width: 4; }
+
+/* link em texto corrido: sempre sublinhado (não só cor) */
+.fc-link { color: inherit; text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 1px; }
+@media (hover: hover) and (pointer: fine) { .fc-link:hover { text-decoration-thickness: 2px; } }
+/* link de ação solto (fora de um parágrafo): alvo ≥ 44 px — "Ver o que a rede exige…", "Ver o passo a passo…" */
+.fc-link--acao { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+@media print {
+  .fc-veu, .fc-fab, .fc-aviso-pendencias, .fc-pular, .fc-faixa-previa { display: none !important; }
+}

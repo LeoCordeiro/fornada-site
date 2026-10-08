@@ -1,0 +1,137 @@
+/* O que as props do Vuetify não alcançam. Cada regra existe por um motivo escrito ao lado. */
+
+/* Camadas de estado (hover/foco por overlay de currentColor) ficam zeradas pelo tema; a transição delas
+   (opacity .2s ease-in-out, fixa no CSS do Vuetify) fugiria das curvas da marca. */
+[class*="__overlay"], [class*="__underlay"] { transition: none !important; }
+
+/* Campo: raio 4 (rounded=true vira pílula; sm = 2 px) */
+.v-field { border-radius: var(--fc-raio-campo); }
+/* Borda do campo: o Vuetify desenha o contorno a 38 % de opacidade no repouso (abaixo de 3:1 — WCAG 1.4.11) e só
+   engrossa no foco. Aqui: opaco sempre (marrom-médio sobre creme = 4,76) e 2 px também no erro. Seletores com
+   .v-input na frente: o CSS de componente do Vuetify chega depois, nos pedaços das rotas, e empataria. */
+.v-input .v-field__outline { --v-field-border-opacity: 1; }
+/* Erro sem vermelho: borda 2 px marrom-profundo + ícone "!" + texto — nunca só cor */
+.v-input.v-input--error .v-field__outline { --v-field-border-width: 2px; }
+.v-input--error .v-messages__message {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--fc-marrom-profundo);
+}
+.v-input--error .v-messages__message::before {
+  content: "!";
+  content: "!" / ""; /* o "!" é desenho: não entra no texto lido */
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--fc-dourado);
+  color: var(--fc-marrom-profundo);
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+}
+.v-input .v-messages { font-size: 14px; line-height: 1.4; opacity: 1; } /* ajuda e erro a 14 px (marrom-médio ≥ 14 px) */
+
+/* ---- Foco de teclado nos componentes do Vuetify — na raiz, para todos ----
+   O Vuetify zera o outline (.v-expansion-panel-title, .v-btn, .v-list-item, o input do campo) com a mesma
+   especificidade do :focus-visible da base.css e carrega depois: o anel de foco sumia. Aqui ele volta com
+   especificidade maior, em todo lugar — nenhuma página precisa de :deep para isso. */
+.v-expansion-panel-title:focus-visible, .v-btn:focus-visible, .v-list-item:focus-visible { outline: 3px solid var(--fc-foco, var(--fc-marrom)); outline-offset: 3px; }
+/* rádio e caixa: o <input> nativo tem opacidade 0 e a camada de foco do Vuetify é zerada pelo tema — o anel vai na
+   linha clicável de 48 px */
+.v-selection-control:has(input:focus-visible) { outline: 3px solid var(--fc-foco, var(--fc-marrom)); outline-offset: 2px; }
+/* campo de texto: o anel vai no campo (o input é zerado). Focado ≠ com erro: a borda de 2 px continua sendo o erro */
+.v-field.v-field--focused { outline: 3px solid var(--fc-foco, var(--fc-marrom)); outline-offset: 2px; }
+
+/* ---- Formulários (FormPedido / FormProdutor) das páginas Para comércios e Seja produtor ---- */
+/* Rádio e caixa com desenho da marca: o ícone do Material sai, o marcador é desenhado aqui.
+   Rádio = o "atual" do indicador de passo: marcado, anel 2 px marrom com o miolo dourado PREENCHIDO até ele (dourado × anel 4,50:1,
+   anel × creme 9,32:1; o ponto solto no creme dava 2,07:1). Caixa = raio 4, marcada em marrom com
+   check creme. Desligado: anel/borda 2 px marrom-médio sobre creme (4,76:1 — WCAG 1.4.11). O miolo entra na mesma
+   transição de 200 ms assa do anel. */
+.fc-form .v-selection-control .v-selection-control__input > .v-icon { opacity: 0; } /* 4 classes: o "dirty" do Vuetify (3) chega depois e empatava */
+.fc-form .v-selection-control__input::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  box-sizing: border-box;
+  border: 2px solid var(--fc-marrom-medio);
+  border-radius: 50%;
+  background-color: var(--fc-creme);
+  pointer-events: none;
+  transition: background-color var(--fc-dur-hover) var(--fc-curva-assa), border-color var(--fc-dur-hover) var(--fc-curva-assa);
+}
+.fc-form .v-radio.v-selection-control--dirty .v-selection-control__input::after {
+  border-color: var(--fc-marrom);
+  background-color: var(--fc-dourado);
+}
+.fc-form .v-checkbox-btn .v-selection-control__input::after { border-radius: var(--fc-raio-campo); }
+.fc-form .v-checkbox-btn.v-selection-control--dirty .v-selection-control__input::after { border-color: var(--fc-marrom); background-color: var(--fc-marrom); }
+/* check creme: a camada ::before do Vuetify (zerada pelo tema) vira o traço do check da caixa marcada */
+.fc-form .v-checkbox-btn .v-selection-control__input::before {
+  content: "";
+  inset: auto;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 5px;
+  margin: -4px 0 0 -5px;
+  border: solid var(--fc-creme);
+  border-width: 0 0 2px 2px;
+  border-radius: 0;
+  background: none;
+  opacity: 0;
+  transform: rotate(-45deg);
+  z-index: 1;
+  pointer-events: none;
+}
+.fc-form .v-checkbox-btn.v-selection-control--dirty .v-selection-control__input::before { opacity: 1; }
+.fc-form .v-input--error .v-selection-control__input::after { border-color: var(--fc-marrom-profundo); }
+@media (prefers-reduced-motion: reduce) { .fc-form .v-selection-control__input::after { transition: none; } }
+.v-input .v-field-label, .v-input .v-label { opacity: 1; }
+
+/* Seleção: chip com raio de campo; estado ligado = fundo marrom + check (não só cor) */
+.v-chip { border-radius: var(--fc-raio-campo); }
+.fc-chip--on { background: var(--fc-marrom); color: var(--fc-creme); }
+
+/* Menu suspenso: fundo creme e sombra quente, nada de sombra cinza do Material */
+.fc-menu .v-list { background: var(--fc-creme); box-shadow: var(--fc-sombra-2); }
+
+/* Painel: sem elevação nem fundo de superfície; o FAQ completa o desenho no SecaoFaq */
+.v-expansion-panel::after { border-color: var(--fc-linha, var(--fc-fio)); opacity: 1; }
+.v-expansion-panel__shadow { display: none; }
+/* abrir/fechar de todo painel (FAQ e "Neste documento" do DocLegal): altura em 240 ms assa abrindo e 200 ms fechando
+   (a única altura animada do site; o padrão do Vuetify era 300 ms). Sob reduzir movimento, na hora */
+.v-expansion-panel .expand-transition-enter-active { transition-duration: var(--fc-dur-expande) !important; transition-timing-function: var(--fc-curva-assa) !important; }
+.v-expansion-panel .expand-transition-leave-active { transition-duration: var(--fc-dur-hover) !important; transition-timing-function: var(--fc-curva-assa) !important; }
+@media (prefers-reduced-motion: reduce) {
+  .v-expansion-panel .expand-transition-enter-active, .v-expansion-panel .expand-transition-leave-active { transition: none !important; }
+}
+
+/* VBtn só aparece dentro de componentes do Vuetify (o site usa BotaoMarca): sem caixa alta e sem sombra */
+.fc-vbtn { text-transform: none; letter-spacing: .01em; box-shadow: none; }
+
+/* ---- transições internas do Vuetify fora do padrão do site (só opacity/transform/cores, só fermenta/assa) ---- */
+/* layout do v-main (transition sem propriedade = "all") e painéis (margin-top, min-height, border-radius) */
+.v-main, .v-expansion-panel, .v-expansion-panel-title, .v-expansion-panel__shadow { transition: none !important; }
+/* loader do campo: o site não usa campo "carregando" (o carregando do site é o véu) */
+.v-field__loader { display: none !important; }
+.v-progress-linear, .v-progress-linear * { transition: none !important; animation: none !important; }
+/* mensagem de erro/ajuda: entra em 200 ms assa (op + ty de −4 a 0), sai em 160 ms */
+.v-input .v-messages__message { transition-property: opacity, transform; transition-duration: var(--fc-dur-hover); transition-timing-function: var(--fc-curva-assa); }
+.v-messages .slide-y-transition-enter-from, .v-messages .slide-y-transition-leave-to { opacity: 0; transform: translateY(calc(var(--fc-desloc-erro) * -1)); }
+.v-messages .slide-y-transition-enter-active { transition-duration: var(--fc-dur-hover) !important; transition-timing-function: var(--fc-curva-assa) !important; }
+.v-messages .slide-y-transition-leave-active { transition-duration: var(--fc-dur-saida) !important; transition-timing-function: var(--fc-curva-assa) !important; }
+@media (prefers-reduced-motion: reduce) {
+  .v-input .v-messages__message, .v-messages .slide-y-transition-enter-active, .v-messages .slide-y-transition-leave-active { transition: none !important; }
+}

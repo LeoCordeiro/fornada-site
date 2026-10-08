@@ -1,0 +1,69 @@
+/* Tokens de movimento. Espelho em src/lib/motion.js com os MESMOS números — o teste
+   tests/unit/motion.test.js confere a paridade. A curva "entrega" (overshoot) não existe aqui nem no JS:
+   mora só nos JSON de enviado-sucesso e selo-sanitario. */
+:root {
+  --fc-curva-fermenta: cubic-bezier(0.22, 1, 0.36, 1);
+  --fc-curva-assa: cubic-bezier(0.45, 0, 0.2, 1);
+
+  --fc-dur-pressao: 120ms;
+  --fc-dur-saida: 160ms;
+  --fc-dur-hover: 200ms;
+  --fc-dur-reduzido: 200ms;
+  --fc-dur-expande: 240ms;
+  --fc-dur-entra-item: 240ms;
+  --fc-dur-gaveta: 280ms;
+  --fc-dur-flip: 320ms;
+  --fc-dur-linha-h1: 340ms;
+  --fc-dur-elemento: 400ms;
+  --fc-dur-ciclo-carga: 900ms;
+
+  --fc-stagger: 100ms;
+  --fc-stagger-linha: 80ms;
+  --fc-stagger-passo: 120ms;
+  --fc-stagger-carga: 150ms;
+  --fc-stagger-item: 40ms;
+
+  --fc-desloc: 14px;
+  --fc-desloc-curto: 8px;
+  --fc-desloc-erro: 4px;
+  --fc-desloc-trio: 4px;
+}
+
+/* ---- Reveal genérico (diretiva v-reveal): só existe escondido quando o JS ligou
+   (.fc-js) e o usuário não pediu menos movimento. Uma vez por visita (useVisita). ---- */
+.fc-js [data-fc-reveal]:not(.is-revelado) { opacity: 0; transform: translateY(var(--fc-desloc)); }
+.fc-js [data-fc-reveal].is-revelado {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--fc-dur-elemento) var(--fc-curva-fermenta), transform var(--fc-dur-elemento) var(--fc-curva-fermenta);
+  transition-delay: calc(min(var(--fc-i, 0), 5) * var(--fc-stagger));
+}
+.fc-js [data-fc-reveal].is-instantaneo { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .fc-js [data-fc-reveal]:not(.is-revelado) { transform: none; }
+  .fc-js [data-fc-reveal].is-revelado { transform: none; transition: opacity var(--fc-dur-reduzido) var(--fc-curva-fermenta); transition-delay: 0ms; }
+}
+
+/* Abertura de página interna: quem usa põe data-fc-entrada="0|1|2" no elemento.
+   animation com fill backwards: no fim não sobra transform (não prende position:fixed). */
+/* começam em opacidade 0,01, não 0: com 0 o Chrome só conta o H1 para o LCP no FIM da animação (+150–500
+   ms; 2,7 s no perfil de celular). 1 % não aparece na tela e o LCP conta o 1º quadro. */
+@keyframes fc-entra {
+  from { opacity: .01; transform: translateY(var(--fc-desloc)); }
+}
+@keyframes fc-entra-op {
+  from { opacity: .01; }
+}
+:where(.fc-js .fc-pagina-entra) [data-fc-entrada] {
+  animation: fc-entra var(--fc-dur-elemento) var(--fc-curva-fermenta) backwards;
+  animation-delay: calc(var(--fc-entrada-i, 0) * var(--fc-stagger));
+}
+:where(.fc-js .fc-pagina-entra) [data-fc-entrada="1"] { --fc-entrada-i: 1; }
+:where(.fc-js .fc-pagina-entra) [data-fc-entrada="2"] { --fc-entrada-i: 2; }
+@media (prefers-reduced-motion: reduce) {
+  :where(.fc-js .fc-pagina-entra) [data-fc-entrada] { animation: fc-entra-op var(--fc-dur-reduzido) var(--fc-curva-fermenta) backwards; animation-delay: 0ms; }
+}
+
+@media print {
+  .fc-js [data-fc-reveal] { opacity: 1 !important; transform: none !important; }
+}

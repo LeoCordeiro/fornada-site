@@ -1,0 +1,81 @@
+/* Tokens da marca. Cores: --fc-<nome> injetadas pelo plugin
+   tokens-da-paleta (vite.config) a partir de paleta.js — aqui não entra hex. Movimento: movimento.css. */
+:root {
+  --fc-fio-sobre-marrom: rgba(240, 230, 210, .24);
+  --fc-sombra-1: 0 1px 0 rgba(91, 58, 34, .16);
+  --fc-sombra-2: 0 16px 32px -16px rgba(91, 58, 34, .16); /* só em fundo claro; escuro = luminância */
+
+  /* espaço */
+  --fc-e4: 4px; --fc-e8: 8px; --fc-e12: 12px; --fc-e16: 16px; --fc-e24: 24px; --fc-e32: 32px;
+  --fc-e48: 48px; --fc-e64: 64px; --fc-e96: 96px;
+  --fc-secao: 48px; /* padding vertical padrão de seção */
+  --fc-secao-home: 48px; /* Home: 48 + 48 entre seções no celular, 80 + 80 no desktop */
+  /* lado da divisa por onde passa uma costura (≥ 72 = perna de 66 + raio 6). 80, não 72: com
+     72 o último ponto encostava na caixa de texto de entrelinha justa (rótulo 1,2; display 1,02) */
+  --fc-respiro-rota: 80px;
+  --fc-respiro-rodape: 96px; /* costura para o rodapé: ≥ 72 com folga — o último bloco costuma terminar em botões */
+  --fc-faixa-rota: 48px; /* mobile: coluna livre à esquerda onde a rota corre (x = 24) */
+  /* passo (PassoRota): lado do ícone/arco e vão até o texto — expostos para a página alinhar com a coluna */
+  --fc-passo-icone: 96px; --fc-passo-vao: 16px;
+
+  /* grade */
+  --gut: 20px; --gap: 16px; --n: 4;
+  --col: calc((min(100%, 1200px) - 2 * var(--gut) - (var(--n) - 1) * var(--gap)) / var(--n));
+  --fc-wrap-max: 1200px;
+
+  /* raio */
+  --fc-raio-botao: 999px; --fc-raio-campo: 4px; --fc-raio-bloco: 0;
+
+  /* cabeçalho: pad + logo + vão até o rótulo do 1º bloco */
+  --fc-header-pad: 20px; --fc-header-logo-h: 40px; --fc-header-gap: 56px;
+  --fc-topo-header: calc(var(--fc-header-pad) + var(--fc-header-logo-h) + var(--fc-header-gap));
+
+  /* tipografia */
+  --fc-ff-titulo: 'Fraunces Variable', serif;
+  --fc-ff-corpo: 'Poppins', sans-serif;
+  --fc-fs-display: clamp(44px, 6.7vw, 96px);
+  --fc-fs-display-interna: clamp(40px, 5.2vw, 72px);
+  --fc-fs-display-home: clamp(44px, 5.6vw, 80px); /* Home: a foto divide a 1ª tela ("na hora combinada." cabe nas colunas 1–7) */
+  --fc-fs-h2: clamp(32px, 3.9vw, 56px);
+  --fc-fs-h3: clamp(22px, 1.95vw, 28px);
+  --fc-fs-num: clamp(56px, 8.4vw, 120px);
+  --fc-fs-rot: 12px;
+  --fc-fs-corpo-lg: clamp(17px, 1.4vw, 20px);
+  --fc-fs-corpo: 16px;
+  --fc-fs-botao: 16px;
+  --fc-fs-legenda: 14px;
+  --fc-fs-apoio: 15px; /* garantias do hero e links do cabeçalho */
+  --fc-fs-gaveta: 24px; /* item da gaveta do menu */
+
+  /* rota */
+  --fc-ponto-m: 12px; --fc-passo-m: 18px; --fc-costura-alcance: 66px; --fc-parada-corte: 30px;
+
+  /* textura "farinha na bancada" (SVG em data-URI) */
+  --fc-ruido-c: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .357 0 0 0 0 .227 0 0 0 0 .133 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+  --fc-ruido-e: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .98 0 0 0 0 .961 0 0 0 0 .918 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E");
+}
+@media (min-width: 768px) { :root { --gut: 32px; --gap: 24px; --n: 8; } }
+@media (min-width: 1024px) {
+  :root { --n: 12; --fc-secao-home: 80px; --fc-fs-rot: 13px; --fc-fs-corpo: 17px; --fc-header-pad: 24px; --fc-header-logo-h: 53px; --fc-passo-icone: 120px; }
+}
+
+/* Tom: cada superfície (BlocoRota, gaveta, rodapé) declara as tintas; quem está dentro herda do ancestral mais
+   próximo — por isso cor de texto, foco, fio e traço do C vêm de variável, nunca de seletor de ancestral. */
+.fc-tom--creme {
+  --fc-tinta: var(--fc-marrom); --fc-tinta-2: var(--fc-marrom-medio); --fc-tinta-corpo: var(--fc-marrom);
+  --fc-foco: var(--fc-marrom); --fc-linha: var(--fc-fio); --fc-traco: var(--fc-marrom);
+  --fc-superficie: var(--fc-creme); --fc-ruido: var(--fc-ruido-c);
+  color: var(--fc-tinta);
+}
+.fc-tom--marrom, .fc-tom--profundo {
+  --fc-tinta: var(--fc-creme); --fc-tinta-2: var(--fc-creme-2); --fc-tinta-corpo: var(--fc-creme-2);
+  --fc-foco: var(--fc-creme); --fc-linha: var(--fc-fio-sobre-marrom); --fc-traco: var(--fc-creme);
+  --fc-ruido: var(--fc-ruido-e);
+  color: var(--fc-tinta);
+}
+.fc-tom--marrom { --fc-superficie: var(--fc-marrom); }
+.fc-tom--profundo { --fc-superficie: var(--fc-marrom-profundo); --fc-linha: var(--fc-marrom); }
+
+/* Mínimos de padding da costura (BlocoRota): não herdam — um bloco dentro de outro não leva o respiro do pai. */
+@property --fc-min-topo { syntax: '<length>'; inherits: false; initial-value: 0px; }
+@property --fc-min-base { syntax: '<length>'; inherits: false; initial-value: 0px; }

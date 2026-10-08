@@ -1,0 +1,11 @@
+{
+  "name": "Fornada Conecta",
+  "short_name": "Fornada Conecta",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#5B3A22",
+  "background_color": "#FAF5EA",
+  "display": "browser"
+}

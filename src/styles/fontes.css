@@ -1,0 +1,44 @@
+/* Subconjuntos da Fraunces (antes 118 + 32 KB na largada de toda rota, agora 87 + 22 KB).
+   Os dois têm os MESMOS descritores do @fontsource (família, estilo, font-weight 100 900) e entram DEPOIS do full.css e
+   do soft-italic.css (main.js): formam uma fonte só com eles; para os caracteres daqui este arquivo vence e qualquer
+   outro cai no arquivo do @fontsource, que só baixa se aparecer — nunca vira quadradinho. Mudou o texto de um título
+   com caractere novo? Conferir na aba Network que fraunces-latin-full-normal / fraunces-latin-soft-italic não baixam;
+   se baixarem, refazer com o caractere novo (comandos abaixo, da raiz; atualizar o unicode-range com o cmap gerado). */
+
+/* Normal dos títulos: os 4 eixos (wght, opsz, SOFT, WONK), features, tabelas e métricas iguais ao arquivo latin "full"
+   do @fontsource — só sai o que o site não escreve. Caracteres = ASCII visível + os não-ASCII do texto real de todas
+   as rotas (dist/*.js e censo do DOM em 7 larguras, painéis abertos) + o par de caixa de cada letra acentuada + aspas
+   curvas simples. Desenho idêntico (comparação pixel a pixel das 12 rotas em 375 e 1440).
+   python -m fontTools.subset node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-normal.woff2
+     --unicodes=<unicode-range abaixo> --layout-features='*' --flavor=woff2 --output-file=src/assets/fonts/fraunces-normal-pt.woff2 */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../assets/fonts/fraunces-normal-pt.woff2') format('woff2-variations');
+  unicode-range: U+0020-007E, U+00A0, U+00A7, U+00A9-00AA, U+00B7, U+00BA, U+00C0-00C3, U+00C7, U+00C9-00CA, U+00CD,
+    U+00D3-00D5, U+00D7, U+00DA, U+00E0-00E3, U+00E7, U+00E9-00EA, U+00ED, U+00F3-00F5, U+00FA, U+2013-2014,
+    U+2018-2019, U+201C-201D, U+2026, U+2212;
+}
+
+/* Itálico de display do H1: o itálico variável completo da Fraunces com opsz (no tamanho
+   de display desenha o itálico fino). O itálico só existe como display-leve — peso 300, SOFT 100
+   (tipografia.css; censo das 12 rotas em 7 larguras: 100 % dos trechos) —, então wght, SOFT e WONK estão FIXOS nesses
+   valores e só o opsz varia: 22 KB com TODAS as letras do português (antes 32 KB com só os 31 glifos dos trechos *…*
+   da época — trecho novo de texto caía no soft-italic de 78 KB, sem opsz, no meio da palavra). Itálico em outro peso
+   sairia 300: não usar (300 itálico, 1× por página, só no H1).
+   python -m fontTools.varLib.instancer node_modules/@fontsource-variable/fraunces/files/fraunces-latin-full-italic.woff2
+     wght=300 SOFT=100 WONK=1 -o italico-300.ttf
+   python -m fontTools.subset italico-300.ttf --unicodes=<unicode-range abaixo> --layout-features='*' --flavor=woff2
+     --output-file=src/assets/fonts/fraunces-italico-display.woff2 */
+@font-face {
+  font-family: 'Fraunces Variable';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url('../assets/fonts/fraunces-italico-display.woff2') format('woff2-variations');
+  unicode-range: U+0020-0022, U+0027, U+002C-002E, U+003A-003B, U+003F, U+0041-005A, U+0061-007A, U+00A0, U+00C0-00C3,
+    U+00C7, U+00C9-00CA, U+00CD, U+00D3-00D5, U+00DA, U+00E0-00E3, U+00E7, U+00E9-00EA, U+00ED, U+00F3-00F5, U+00FA,
+    U+2013-2014, U+2018-2019, U+201C-201D, U+2026;
+}

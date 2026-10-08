@@ -1,0 +1,470 @@
+{
+  "versao": 1,
+  "gerador": "scripts/lottie-build.mjs",
+  "fr": 30,
+  "orcamentoKB": {
+    "porArquivo": 25,
+    "total": 150
+  },
+  "paleta": [
+    "#5B3A22",
+    "#3E2615",
+    "#826853",
+    "#D9A441",
+    "#FAF5EA",
+    "#F0E6D2"
+  ],
+  "curvas": {
+    "fermenta": {
+      "o": {
+        "x": 0.22,
+        "y": 1
+      },
+      "i": {
+        "x": 0.36,
+        "y": 1
+      }
+    },
+    "assa": {
+      "o": {
+        "x": 0.45,
+        "y": 0
+      },
+      "i": {
+        "x": 0.2,
+        "y": 1
+      }
+    },
+    "entrega": {
+      "o": {
+        "x": 0.34,
+        "y": 1.3
+      },
+      "i": {
+        "x": 0.64,
+        "y": 1
+      }
+    }
+  },
+  "totalKB": 72.83,
+  "animacoes": {
+    "pontos-conecta": {
+      "arquivos": {
+        "normal": "pontos-conecta.json",
+        "invertida": "pontos-conecta.json"
+      },
+      "kb": {
+        "normal": 2.35,
+        "invertida": null
+      },
+      "invertidaIgualANormal": true,
+      "largura": 260,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 26,
+      "duracaoMs": 833,
+      "posterFrame": 25,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Home",
+          "rota": "/",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Sobre",
+          "rota": "/sobre",
+          "fundo": "marrom",
+          "variante": "invertida"
+        }
+      ]
+    },
+    "pao-cresce": {
+      "arquivos": {
+        "normal": "pao-cresce.json",
+        "invertida": "pao-cresce-invertida.json"
+      },
+      "kb": {
+        "normal": 4.83,
+        "invertida": 4.84
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 55,
+      "duracaoMs": 600,
+      "posterFrame": 18,
+      "segmentos": {
+        "entrada": {
+          "de": 0,
+          "ate": 19,
+          "ms": 600
+        },
+        "loop": {
+          "de": 18,
+          "ate": 54,
+          "ms": 1200
+        }
+      },
+      "gatilho": "viewport",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Seja produtor",
+          "rota": "/seja-produtor",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "passo-1-pedido": {
+      "arquivos": {
+        "normal": "passo-1-pedido.json",
+        "invertida": "passo-1-pedido-invertida.json"
+      },
+      "kb": {
+        "normal": 6.13,
+        "invertida": 6.13
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 13,
+      "duracaoMs": 400,
+      "posterFrame": 12,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "passo-2-atribuicao": {
+      "arquivos": {
+        "normal": "passo-2-atribuicao.json",
+        "invertida": "passo-2-atribuicao-invertida.json"
+      },
+      "kb": {
+        "normal": 3.96,
+        "invertida": 3.96
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 13,
+      "duracaoMs": 400,
+      "posterFrame": 12,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "marrom",
+          "variante": "invertida"
+        }
+      ]
+    },
+    "passo-3-fornada": {
+      "arquivos": {
+        "normal": "passo-3-fornada.json",
+        "invertida": "passo-3-fornada-invertida.json"
+      },
+      "kb": {
+        "normal": 3.85,
+        "invertida": 3.85
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 13,
+      "duracaoMs": 400,
+      "posterFrame": 12,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "marrom",
+          "variante": "invertida"
+        }
+      ]
+    },
+    "passo-4-entrega": {
+      "arquivos": {
+        "normal": "passo-4-entrega.json",
+        "invertida": "passo-4-entrega-invertida.json"
+      },
+      "kb": {
+        "normal": 3.86,
+        "invertida": 3.86
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 13,
+      "duracaoMs": 400,
+      "posterFrame": 12,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "selo-sanitario": {
+      "arquivos": {
+        "normal": "selo-sanitario.json",
+        "invertida": "selo-sanitario-invertida.json"
+      },
+      "kb": {
+        "normal": 3.76,
+        "invertida": 3.76
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 15,
+      "duracaoMs": 467,
+      "posterFrame": 14,
+      "gatilho": "viewport",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa",
+        "entrega"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Home",
+          "rota": "/",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Qualidade",
+          "rota": "/qualidade",
+          "fundo": "marrom",
+          "variante": "invertida"
+        },
+        {
+          "pagina": "Seja produtor",
+          "rota": "/seja-produtor",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Seja produtor",
+          "rota": "/seja-produtor",
+          "fundo": "creme",
+          "variante": "normal",
+          "player": false
+        }
+      ]
+    },
+    "rota-entrega": {
+      "arquivos": {
+        "normal": "rota-entrega.json",
+        "invertida": null
+      },
+      "kb": {
+        "normal": 4.4,
+        "invertida": null
+      },
+      "invertidaIgualANormal": false,
+      "largura": 400,
+      "altura": 120,
+      "fr": 30,
+      "ip": 0,
+      "op": 31,
+      "duracaoMs": 1000,
+      "posterFrame": 30,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Como funciona",
+          "rota": "/como-funciona",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "enviado-sucesso": {
+      "arquivos": {
+        "normal": "enviado-sucesso.json",
+        "invertida": "enviado-sucesso-invertida.json"
+      },
+      "kb": {
+        "normal": 3.59,
+        "invertida": 3.59
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 19,
+      "duracaoMs": 600,
+      "posterFrame": 18,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa",
+        "entrega"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Para comércios",
+          "rota": "/para-comercios",
+          "fundo": "creme",
+          "variante": "normal"
+        },
+        {
+          "pagina": "Seja produtor",
+          "rota": "/seja-produtor",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "catalogo-vazio": {
+      "arquivos": {
+        "normal": "catalogo-vazio.json",
+        "invertida": null
+      },
+      "kb": {
+        "normal": 2.3,
+        "invertida": null
+      },
+      "invertidaIgualANormal": false,
+      "largura": 200,
+      "altura": 200,
+      "fr": 30,
+      "ip": 0,
+      "op": 16,
+      "duracaoMs": 500,
+      "posterFrame": 15,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "fermenta",
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Produtos",
+          "rota": "/produtos",
+          "fundo": "creme",
+          "variante": "normal"
+        }
+      ]
+    },
+    "whatsapp-nudge": {
+      "arquivos": {
+        "normal": "whatsapp-nudge.json",
+        "invertida": null
+      },
+      "kb": {
+        "normal": 3.8,
+        "invertida": null
+      },
+      "invertidaIgualANormal": false,
+      "largura": 120,
+      "altura": 120,
+      "fr": 30,
+      "ip": 0,
+      "op": 25,
+      "duracaoMs": 800,
+      "posterFrame": 0,
+      "gatilho": "manual",
+      "loop": false,
+      "curvas": [
+        "assa"
+      ],
+      "decorative": true,
+      "uso": [
+        {
+          "pagina": "Todas",
+          "rota": "*",
+          "fundo": "marrom",
+          "variante": "normal"
+        }
+      ]
+    }
+  }
+}

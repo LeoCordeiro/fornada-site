@@ -1,0 +1,64 @@
+# Netlify: build do Vite (Vue 3 + Vuetify, SPA com hash router), publicação da pasta dist e cabeçalhos de segurança.
+
+# Produção: `npm run build` FALHA de propósito enquanto faltar dado da empresa (WhatsApp, e-mail, vigência e revisão
+# dos textos legais — portão em src/config/pendencias-build.js). Build de produção quebrado = nada novo vai ao ar.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+[context.production]
+  command = "npm run build"
+
+# Prévia para aprovação: deploy de branch e deploy preview de PR.
+# `build:previa` = lottie:check + vite build --mode previa (faixa "Prévia", pendências marcadas, sem portão).
+[context.branch-deploy]
+  command = "npm run build:previa"
+
+[context.deploy-preview]
+  command = "npm run build:previa"
+
+# Caminho sem arquivo serve o index.html com 200; o router troca /produtos por /#/produtos e manda o desconhecido para
+# o 404 do app. Sem `force`: arquivo que existe (assets/…) é servido como está.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Cabeçalhos. CSP estrita: tudo do próprio endereço, nenhum host externo.
+#  - script-src: hash do script inline da pré-busca da rota (vite.config.js, CODIGO_PRE).
+#  - style-src, sem 'unsafe-inline', um hash por trecho, nesta ordem:
+#      1. <style> da paleta (vite.config.js, tokensDaPaleta);
+#      2. <style> do tema que o Vuetify injeta (src/plugins/vuetify.js + paleta + versão do Vuetify);
+#      3. texto vazio: o Vuetify cria esse <style> VAZIO e só depois põe o tema (sem ele, 1 erro de CSP por carga).
+#    Mudou paleta, tema ou versão do Vuetify? O build acusa o hash do index.html (plugin guarda-csp); o do tema, só o
+#    navegador: servir o dist com estes cabeçalhos e ler o console ("Refused to apply inline style … 'sha256-…'") —
+#    trocar aqui. Passo a passo em DESENVOLVIMENTO.md, "CSP por hash".
+#  - img-src data: a textura de ruído dos blocos é um SVG em data: URI (src/styles/tokens.css, --fc-ruido-*).
+#  - form-action 'none': os formulários fecham no WhatsApp por window.open (navegação, não envio de formulário).
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-63DssWtrY3Dd3Z+kXK/2la6TCrk6TRNXSZogMLBFOT8='; style-src 'self' 'sha256-xPadNvh2eKZODzHQhYtg6JEGpR/yOaXWdJsk44tU8l0=' 'sha256-YteIll9xyQrV8VcJgZ5fYvJjeXQ3wcwU2OrorDWuD3o=' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=()"
+
+# Arquivos com hash no nome: um ano, imutáveis. index.html sempre revalida (index em cache serve pacote velho).
+# Cache-Control só nestes blocos: o mesmo cabeçalho em dois blocos que casam com o mesmo caminho é ambíguo na Netlify.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    Cache-Control = "no-cache"

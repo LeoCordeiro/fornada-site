@@ -1,0 +1,34 @@
+/* Escala tipográfica (clamp por largura). Prefixo fc- para não colidir com .text-* do Vuetify.
+   Todo título Fraunces: optical sizing automático + SOFT 100. Capitalização de frase sempre. */
+.fc-fr, .fc-display, .fc-h2, .fc-h3, .fc-num {
+  font-family: var(--fc-ff-titulo);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 100;
+}
+.fc-display { font-weight: 700; font-size: var(--fc-fs-display); line-height: 1.02; letter-spacing: -.025em; margin: 0; }
+.fc-display--interna { font-size: var(--fc-fs-display-interna); }
+/* display-leve: 300 itálico, 1× por página, só no H1 (arquivo soft-italic: sem opsz no trecho itálico) */
+.fc-leve { font-weight: 300; font-style: italic; letter-spacing: -.02em; }
+.fc-h2 { font-weight: 700; font-size: var(--fc-fs-h2); line-height: 1.08; letter-spacing: -.015em; margin: 0; text-wrap: balance; }
+.fc-h3 { font-weight: 600; font-size: var(--fc-fs-h3); line-height: 1.2; letter-spacing: -.005em; margin: 0; }
+.fc-num { font-weight: 700; font-size: var(--fc-fs-num); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums lining-nums; }
+/* rótulo: digitar em caixa de frase, o CSS sobe (leitor de tela não soletra) */
+.fc-rot {
+  font-family: var(--fc-ff-corpo);
+  font-weight: 500;
+  font-size: var(--fc-fs-rot);
+  line-height: 1.2;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.fc-clg { font-size: var(--fc-fs-corpo-lg); line-height: 1.55; }
+.fc-leg { font-size: var(--fc-fs-legenda); line-height: 1.5; letter-spacing: .005em; }
+.fc-tab { font-variant-numeric: tabular-nums lining-nums; }
+.fc-txt { max-width: 62ch; }
+/* texto corrido sem palavra sozinha na última linha: a 375 a Home cai de 4 para 1 (o "Guarulhos" que desce
+   de propósito) */
+#conteudo p, .fc-txt, .fc-clg { text-wrap: pretty; }
+/* texto secundário: marrom-médio só sobre creme (≥14 px); no escuro vira creme-2 (via tom) */
+.fc-secundario { color: var(--fc-tinta-2, var(--fc-marrom-medio)); }
+.fc-corpo { color: var(--fc-tinta-corpo, var(--fc-marrom)); }
