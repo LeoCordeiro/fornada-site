@@ -316,7 +316,7 @@ const DESENHO = {
 // uso = onde a animação aparece: página, rota, fundo e variante; player: false = desenho estático do pôster, sem baixar o
 // JSON. gatilho = padrão do BrandLottie (a prop trigger vence). uso pedindo variante sem arquivo derruba o build: gerar a
 // variante aqui antes de usar.
-// Os 4 passos e a rota de entrega moram na trilha do comércio de Como funciona (faixas creme e marrom).
+// Os 4 passos moram na trilha do comércio de Como funciona (faixa marrom). A rota de entrega fica no catálogo, sem uso.
 const NA_TRILHA = (tom) => [{ pagina: 'Como funciona', rota: '/como-funciona', fundo: tom, variante: tom === 'creme' ? 'normal' : 'invertida' }]
 const CATALOGO = [
   {
@@ -334,10 +334,10 @@ const CATALOGO = [
       { pagina: 'Seja produtor', rota: '/seja-produtor', fundo: 'creme', variante: 'normal' },
     ],
   },
-  { chave: 'passo-1-pedido', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('creme') },
+  { chave: 'passo-1-pedido', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('marrom') },
   { chave: 'passo-2-atribuicao', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('marrom') },
   { chave: 'passo-3-fornada', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('marrom') },
-  { chave: 'passo-4-entrega', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('creme') },
+  { chave: 'passo-4-entrega', poster: 12, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true, uso: NA_TRILHA('marrom') },
   {
     chave: 'selo-sanitario', poster: 14, gatilho: 'viewport', loop: false, invertida: 'gera', decorative: true,
     uso: [
@@ -349,7 +349,7 @@ const CATALOGO = [
       { pagina: 'Seja produtor', rota: '/seja-produtor', fundo: 'creme', variante: 'normal', player: false },
     ],
   },
-  { chave: 'rota-entrega', poster: 30, gatilho: 'manual', loop: false, invertida: null, decorative: true, uso: NA_TRILHA('creme') },
+  { chave: 'rota-entrega', poster: 30, gatilho: 'manual', loop: false, invertida: null, decorative: true, uso: [] },
   {
     chave: 'enviado-sucesso', poster: 18, gatilho: 'manual', loop: false, invertida: 'gera', decorative: true,
     uso: [

@@ -1,17 +1,17 @@
 <script setup>
 /**
  * Como funciona `/como-funciona`. Ordem: abertura [C] com os atalhos
- * "Tenho um comércio"/"Tenho forno" → trilha do comércio (o U da Home, id `trilha-comercio`) → trilha do produtor [C]
- * (id `trilha-produtor`) → FAQ [C] (id `faq`) → chamada final [M] com o mesmo texto da Home.
- * Costuras: o U termina marrom no desktop e creme no celular → a trilha do produtor só tem costura no desktop (col 9,
- * sob o U e fora do botão dele); FAQ → chamada final na col 11 (fora da lista do FAQ e do botão dele); rodapé na
- * col 9 (fora dos botões da chamada final). x sem texto em volta vence o zigue-zague (como na Home); todas passam no
- * respiro de 72 px dos dois lados da divisa.
+ * "Tenho um comércio"/"Tenho forno" → trilha do comércio [M] (os 4 passos em ordem, id `trilha-comercio`) → trilha do
+ * produtor [C] (id `trilha-produtor`) → FAQ [C] (id `faq`) → chamada final [M] com o mesmo texto da Home.
+ * Costuras (celular: x 24, a faixa da rota das duas trilhas): abertura → trilha do comércio na col 11 (fora do título
+ * e dos atalhos); trilha do comércio → trilha do produtor na col 9 (fora do botão do comércio); FAQ → chamada final na
+ * col 11 (fora da lista do FAQ e do botão dele); rodapé na col 9 (fora dos botões da chamada final). Todas passam no
+ * respiro de 80 px dos dois lados da divisa.
  * Atalhos: clique rola até a trilha (instantâneo com reduzir movimento) e põe o foco no título dela, sem `href="#…"`
  * e sem mexer na URL.
  */
 import AberturaPagina from '@/components/secoes/AberturaPagina.vue'
-import ComoFuncionaU from '@/components/secoes/ComoFuncionaU.vue'
+import TrilhaComercio from '@/components/como-funciona/TrilhaComercio.vue'
 import SecaoFaq from '@/components/secoes/SecaoFaq.vue'
 import CtaFinal from '@/components/secoes/CtaFinal.vue'
 import BotaoMarca from '@/components/marca/BotaoMarca.vue'
@@ -45,13 +45,13 @@ function irPara(id) {
       </template>
     </AberturaPagina>
 
-    <ComoFuncionaU id="trilha-comercio" id-titulo="trilha-comercio-titulo" :cabecalho="TRILHA_COMERCIO.cabecalho">
+    <TrilhaComercio id="trilha-comercio" id-titulo="trilha-comercio-titulo" :cabecalho="TRILHA_COMERCIO.cabecalho" :costura="{ coluna: 11, halo: 'creme' }">
       <template #rodape>
-        <BotaoMarca class="cf-u-acao" variante="ouro" :to="CTA_COMERCIO.to">{{ TRILHA_COMERCIO.acao }}</BotaoMarca>
+        <BotaoMarca variante="ouro" :to="CTA_COMERCIO.to">{{ TRILHA_COMERCIO.acao }}</BotaoMarca>
       </template>
-    </ComoFuncionaU>
+    </TrilhaComercio>
 
-    <TrilhaProdutor :costura="{ coluna: 9, halo: 'marrom', somente: 'desktop' }" />
+    <TrilhaProdutor :costura="{ coluna: 9, halo: 'marrom' }" />
 
     <SecaoFaq id="faq" :rotulo="FAQ_SECAO.rotulo" :titulo="FAQ_SECAO.titulo" :itens="FAQ">
       <template #fim>
@@ -63,9 +63,3 @@ function irPara(id) {
     <CtaFinal tom="marrom" :costura="{ coluna: 11, halo: 'creme' }" />
   </div>
 </template>
-
-<style scoped>
-/* celular/tablet: o botão do U sai da faixa da rota (48) e começa na calha, como o título do U — a 360 cabe numa linha
-o último ponto da rota do U termina no passo 4, acima dele */
-@media (max-width: 1023px) { .cf-u-acao { margin-left: calc(var(--fc-faixa-rota) * -1); max-width: calc(100% + var(--fc-faixa-rota)); } }
-</style>
