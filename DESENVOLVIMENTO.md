@@ -117,9 +117,8 @@ trocar os arquivos e a entrada no mapa; nenhuma página muda.
   (opcional) na media `mediaLargo` do `FotoReal`, para tela larga.
 - Entrada sem `imagens`: na prévia aparece o espaço marcado com a descrição; em produção o espaço não existe.
 - Fotos de banco de imagens guardam o lugar das reais: processo na abertura e na segurança da Início, produto e
-  ambiente nas categorias e nas duas portas. Seção que mostra produto de banco traz a nota "Imagens ilustrativas."
-  (`NOTA_FOTOS_CATEGORIAS`, em `src/data/categorias.js`). Foto de banco não leva legenda nem crédito, e nenhuma mostra
-  rosto, adorno em quem manipula alimento, letreiro ou marca legível.
+  ambiente nas categorias e nas duas portas. Foto de banco não leva legenda nem crédito, e nenhuma mostra rosto,
+  adorno em quem manipula alimento, letreiro ou marca legível.
 - A foto da abertura tem altura máxima no desktop (`HERO_FOTO.alturaMax`, em `src/components/home/conteudo.js`):
   acima dela o quadro fica mais largo e a foto corta em cima e embaixo. Os `sizes` e as `media` dela valem também
   para o preload da pré-busca da rota (`vite.config.js`).

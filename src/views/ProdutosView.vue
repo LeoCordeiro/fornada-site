@@ -17,7 +17,7 @@ import BotaoMarca from '@/components/marca/BotaoMarca.vue'
 import SeloSanitario from '@/components/marca/SeloSanitario.vue'
 import FiltroCategorias from '@/components/produtos/FiltroCategorias.vue'
 import ListaCategorias from '@/components/produtos/ListaCategorias.vue'
-import { CATEGORIAS, NOTA_FOTOS_CATEGORIAS, SLUGS_CATEGORIA, categoriaPorSlug } from '@/data/categorias'
+import { CATEGORIAS, SLUGS_CATEGORIA, categoriaPorSlug } from '@/data/categorias'
 import { ATALHOS } from '@/data/atalhosWhatsapp'
 import { CTA_COMERCIO } from '@/data/navegacao'
 import { useRodape } from '@/composables/useRodape'
@@ -90,8 +90,6 @@ useRodape({ coluna: 12 }) // rodapé fora dos dois botões do fim (cols 5–11)
       <template #titulo>{{ ABERTURA.titulo.antes }}<span class="fc-leve">{{ ABERTURA.titulo.leve }}</span>{{ ABERTURA.titulo.depois }}</template>
       <template #extra>
         <FiltroCategorias ref="filtro" class="produtos__filtro" :categorias="categorias" :ativa="ativa" :vazia="!!vazia" @escolher="escolher" />
-        <!-- as fotos das categorias são de banco até as reais chegarem -->
-        <p class="fc-leg fc-secundario produtos__nota">{{ NOTA_FOTOS_CATEGORIAS }}</p>
       </template>
     </AberturaPagina>
 
@@ -122,7 +120,6 @@ useRodape({ coluna: 12 }) // rodapé fora dos dois botões do fim (cols 5–11)
 /* celular: a barra fica 16 px abaixo do sub — com a faixa de prévia de 3 linhas (73 px a 375) o chip da 1ª linha
    descia para 86 px do pé de uma tela de 667, dentro do scroll-padding de 96 do celular (o clique rolava a página) */
 .produtos__filtro { margin-top: 16px; }
-.produtos__nota { margin-top: 12px; }
 .produtos__seguranca { margin-top: 28px; }
 .produtos__seguranca-texto { display: grid; justify-items: start; gap: 4px; }
 .produtos__acoes { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 16px; margin-top: 32px; }

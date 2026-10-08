@@ -2,20 +2,19 @@
 /**
  * Produtos da Início: o pão em destaque (foto 4:3, nome e frase) e as outras três categorias em lista, cada uma com a
  * foto em miniatura quadrada (o mesmo arquivo 4:3, cortado no centro). Cada categoria é um link para o filtro dela em
- * Produtos; a foto fica dentro do link com alt "" (o nome da categoria já diz o que ela mostra). As fotos são de banco,
- * ilustrativas, até as reais chegarem: a seção fecha com a nota NOTA_FOTOS_CATEGORIAS.
+ * Produtos; a foto fica dentro do link com alt "" (o nome da categoria já diz o que ela mostra).
  * ≥ 1024: H2 nas colunas 1–5 e "Ver todos os produtos" à direita, na linha dele (as colunas 6–7 ficam livres no topo:
  * é por ali que descem os 3 pontos da saída da rota); destaque nas colunas 1–5, lista nas 8–12 com fio de 1 px entre
- * as linhas e miniaturas de 112 px. Embaixo, o orçamento (link de texto para o WhatsApp) e a nota.
+ * as linhas e miniaturas de 112 px. Embaixo, o orçamento (link de texto para o WhatsApp).
  * 768–1023: destaque e lista lado a lado, 4 colunas cada. < 768: H2 → "Ver todos" → destaque com a foto sangrando as
- * duas bordas → lista com miniaturas de 88 px → orçamento → nota.
+ * duas bordas → lista com miniaturas de 88 px → orçamento.
  * Topo com 80 px em toda largura: a rota sai da faixa marrom por ele (x 24 no celular).
  * Só o pão leva frase (FRASE_CATEGORIA): a Home não depende da lista de exemplos.
  */
 import { computed } from 'vue'
 import BlocoRota from '@/components/rota/BlocoRota.vue'
 import FotoReal from '@/components/marca/FotoReal.vue'
-import { CATEGORIAS, FRASE_CATEGORIA, NOTA_FOTOS_CATEGORIAS } from '@/data/categorias'
+import { CATEGORIAS, FRASE_CATEGORIA } from '@/data/categorias'
 import { ATALHOS } from '@/data/atalhosWhatsapp'
 import { linkWhatsApp } from '@/lib/whatsapp'
 import { avisarWhatsappPendente } from '@/composables/useAvisoWhatsapp'
@@ -73,7 +72,6 @@ function aoClicarOrcamento(e) {
           @click="aoClicarOrcamento"
         >{{ P.orcamento.link }}</button>{{ P.orcamento.depois }}
       </p>
-      <p class="fc-leg fc-secundario fc-vp__nota">{{ NOTA_FOTOS_CATEGORIAS }}</p>
     </div>
   </BlocoRota>
 </template>
@@ -96,13 +94,11 @@ function aoClicarOrcamento(e) {
 }
 .fc-vp__orc { margin-top: 32px; }
 .fc-vp__orc-btn { padding: 0; border: 0; background: none; cursor: pointer; font-weight: inherit; }
-.fc-vp__nota { margin-top: 8px; }
 @media (min-width: 768px) {
   .fc-vp__destaque { grid-column: 2 / 6; grid-row: 3; }
   .fc-vp__foto { margin-inline: 0; }
   .fc-vp__lista { grid-column: 6 / 10; grid-row: 3; align-self: center; margin-top: 24px; }
   .fc-vp__orc { grid-row: 4; }
-  .fc-vp__nota { grid-row: 5; }
 }
 @media (min-width: 1024px) {
   .fc-vp__titulo { grid-column: 2 / 7; grid-row: 1; }
@@ -112,6 +108,5 @@ function aoClicarOrcamento(e) {
   .fc-vp__cat { gap: 24px; padding: 20px 0; }
   .fc-vp__mini { width: 112px; }
   .fc-vp__orc { grid-column: 2 / 14; grid-row: 3; margin-top: 40px; }
-  .fc-vp__nota { grid-column: 2 / 14; grid-row: 4; }
 }
 </style>

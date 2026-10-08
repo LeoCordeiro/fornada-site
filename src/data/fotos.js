@@ -1,10 +1,9 @@
 // Mapa único das fotos do site. Todo FotoReal lê daqui pela `chave`: trocar uma foto é trocar o arquivo em
 // src/assets/fotos/ e a entrada aqui — página nenhuma muda.
-// Enquanto as fotos reais não chegam, a Início e Produtos usam fotos de banco de imagens: na abertura e na segurança,
-// cenas de processo (massa crua em padaria profissional); nas categorias e nas duas portas, fotos ilustrativas de
-// produto e de ambiente — as seções que mostram produto trazem a nota "Imagens ilustrativas."
-// (NOTA_FOTOS_CATEGORIAS, em data/categorias). Nenhuma foto de banco leva legenda nem crédito na página, e nenhuma
-// mostra rosto, adorno em quem manipula alimento, letreiro ou marca legível.
+// Enquanto as fotos próprias não chegam, a Início e Produtos usam fotos de banco de imagens: na abertura e na
+// segurança, cenas de processo (massa crua em padaria profissional); nas categorias e nas duas portas, fotos de
+// produto e de ambiente. Nenhuma leva legenda nem crédito na página, e nenhuma mostra rosto, adorno em quem manipula
+// alimento, letreiro ou marca legível.
 // Sem `imagens` = ainda sem foto: na prévia o FotoReal mostra o espaço com o briefing (`descricao`); em produção não
 // desenha nada e quem reservava o espaço pergunta `fotoNoAr(chave)` para fechar o layout.
 import { mostrarPendencias } from '@/config/site'
@@ -79,7 +78,7 @@ export const FOTOS = {
     imagens: { base: serie('porta-produtor-3x2') }, // banco: uniforme branco e luvas, sem rosto
   },
 
-  // ---- Categorias (Início e Produtos): fotos ilustrativas de banco; com a foto real, a legenda do comentário ----
+  // ---- Categorias (Início e Produtos): fotos de banco; com a foto real, a legenda do comentário ----
   'categoria-paes': {
     alt: 'Pãezinhos num cesto forrado com papel',
     legenda: '', // com a foto real: 'Produto da rede, do jeito que chega.'

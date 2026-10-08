@@ -9,9 +9,6 @@ import { CONFIRMADO, mostrarPendencias } from '@/config/site'
 
 export const MOSTRAR_EXEMPLOS = CONFIRMADO.exemplosProduto || mostrarPendencias
 
-/** Nota das seções que mostram as fotos das categorias (fotos de banco, ilustrativas, até as reais chegarem). */
-export const NOTA_FOTOS_CATEGORIAS = 'Imagens ilustrativas.'
-
 const BASE = [
   {
     chave: 'paes',
